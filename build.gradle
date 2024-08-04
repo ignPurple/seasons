@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "7.1.0"
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
+
+    implementation("net.kyori:adventure-text-minimessage:4.17.0")
+    implementation("net.kyori:adventure-platform-bukkit:4.3.3")
+}
+
+jar {
+    compileJava.options.encoding = 'UTF-8'
+    final String outputDir = System.getenv("SEASONS_OUTPUT");
+    if (outputDir == null) {
+        return;
+    }
+
+    destinationDirectory.set(file(outputDir))
+}
+
+tasks {
+    shadowJar {
+        final String outputDir = System.getenv("SEASONS_OUTPUT");
+        if (outputDir == null) {
+            return;
+        }
+
+        destinationDirectory.set(file(outputDir))
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
