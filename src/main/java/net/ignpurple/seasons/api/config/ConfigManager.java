@@ -185,16 +185,16 @@ public class ConfigManager {
             if (this.serializers.containsKey(defaultObjectClass)) {
                 final Serializer<?> serializer = this.serializers.get(defaultObjectClass);
 
-                serializer.serialize(
+                field.set(parent, serializer.deserialize(
                     new ConfigSerializerContext(
                         this,
                         configAnnotation,
                         yamlConfiguration,
                         field
                     ),
-                    path,
+                    yamlConfiguration.getConfigurationSection(path),
                     defaultObject
-                );
+                ));
                 return;
             }
 

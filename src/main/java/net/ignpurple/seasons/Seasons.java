@@ -14,7 +14,6 @@ public class Seasons extends JavaPlugin {
     private ConfigManager configManager;
     private EventBus eventBus;
 
-
     public void onEnable() {
         this.initConfig();
         this.initEventBus();

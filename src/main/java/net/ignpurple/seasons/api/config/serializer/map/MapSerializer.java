@@ -31,13 +31,16 @@ public class MapSerializer implements Serializer<Map<Object, Object>> {
             }
 
             final String keyString = this.keyToString(key);
+            System.out.println(path);
+            final String keyPath = path + "." + keyString;
+            System.out.println(keyPath);
             final Object value = entry.getValue();
             if (this.isDefaultSerializableValue(value)) {
-                configuration.set(path + "." + keyString, value);
+                configuration.set(keyPath, value);
                 return;
             }
 
-            configManager.scanConfig(value.getClass(), value, configAnnotation, configuration, path + "." + keyString + ".");
+            configManager.scanConfig(value.getClass(), value, configAnnotation, configuration, keyPath);
         }
     }
 
@@ -56,7 +59,7 @@ public class MapSerializer implements Serializer<Map<Object, Object>> {
             final String path = section.getCurrentPath();
             for (final String keys : section.getKeys(false)) {
                 final Object valueObject = value.getDeclaredConstructor().newInstance();
-                configManager.scanConfig(value, valueObject, configAnnotation, configuration, path + "." + keys);
+                configManager.scanConfig(value, valueObject, configAnnotation, configuration, path + "." + keys + ".");
 
                 map.put(configSerializerContext.deserialize(key, path, keys), valueObject);
             }
